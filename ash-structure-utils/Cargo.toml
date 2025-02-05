@@ -1,0 +1,12 @@
+[package]
+name = "ash-structure-utils"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ash = "0.38.0"
+
+[features]
+default = ["type_sizes", "type_names"]
+type_sizes = []
+type_names =[]
