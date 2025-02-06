@@ -56,7 +56,7 @@ pub fn generate_struct_type_size(t: &Type, blacklist: &HashSet<String>) -> Optio
     let name_ident = Ident::new(name, Span::call_site());
 
     Some(quote! {
-       ash::vk::#name_ident::STRUCTURE_TYPE => std::mem::size_of::<ash::vk::#name_ident>()
+       ash::vk::#name_ident::STRUCTURE_TYPE => (size_of::<ash::vk::#name_ident>(), align_of::<ash::vk::#name_ident>())
     })
 }
 
@@ -167,12 +167,13 @@ pub fn write_source_code<P: AsRef<Path>>(vk_xml_path: &Path, src_dir: P) {
 
     let type_size_code = quote! {
         pub trait VulkanSized {
-            fn get_type_size(self) -> usize;
+            fn get_type_size_and_alignment(self) -> (usize, usize);
         }
 
         impl VulkanSized for ash::vk::StructureType {
-            fn get_type_size(self) -> usize {
+            fn get_type_size_and_alignment(self) -> (usize, usize) {
                 use ash::vk::TaggedStructure;
+                use std::mem::{size_of, align_of};
                 match self {
                     #(#type_size_tokens),*,
                     _ => panic!("Error while trying to find type size of structure type numbered {}. No such structure type is known. You may have to update ash-structure-utils.", self.as_raw()),

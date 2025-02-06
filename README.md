@@ -12,4 +12,4 @@ To get the name of a struct from its `ash::vk::StructureType`, import the module
 
 ## Type sizes
 
-To get the size of a struct from its `ash::vk::StructureType`, import the module `ash-structure-utils::type_sizes`. This allows you to cast to `VulkanSized` which lets you call `.get_type_size()` on a structure type. This returns a usize equal to the amount of bytes fo the required structure type. This is useful for cloning unknown `ash::vk::BaseOutStructure`s or `ash::vk::BaseInStructure`s, which can be used for feature resolution.
+To get the size of a struct from its `ash::vk::StructureType`, import the module `ash-structure-utils::type_sizes`. This allows you to cast to `VulkanSized` which lets you call `.get_type_size_and_alignment()` on a structure type. This returns a tuple containing a usize equal to the amount of bytes for the structure type and the alignment of the structure type. This is useful for cloning unknown `ash::vk::BaseOutStructure`s or `ash::vk::BaseInStructure`s, which can be used for feature resolution.
